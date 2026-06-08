@@ -1,0 +1,47 @@
+---
+const navLinks = [
+  { href: '#about', label: 'About' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#stack', label: 'Stack' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+
+<header class="sticky top-0 z-40 border-b border-navy-600/50 bg-navy-950/80 backdrop-blur-md">
+  <nav
+    class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4"
+    aria-label="Main navigation"
+  >
+    <a
+      href="/"
+      class="font-mono text-sm font-medium tracking-tight text-teal-400 transition-colors hover:text-cyan-400"
+    >
+      <span class="text-slate-500">~/</span>hesam<span class="text-slate-400">.codes</span>
+    </a>
+
+    <ul class="hidden items-center gap-8 sm:flex">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="font-mono text-xs uppercase tracking-widest text-slate-400 transition-colors hover:text-teal-400"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a
+      href="https://github.com/Hesamsamani"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="terminal-border rounded-md bg-navy-800/60 px-3 py-1.5 font-mono text-xs text-teal-400 transition-all hover:border-teal-500/40 hover:bg-navy-700/60"
+      aria-label="GitHub profile (opens in new tab)"
+    >
+      <span class="text-slate-500">$</span> gh
+    </a>
+  </nav>
+</header>

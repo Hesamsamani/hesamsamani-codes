@@ -1,0 +1,22 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import ProjectCard from './ProjectCard.astro';
+import { projects } from '../data/projects';
+
+const featured = projects.filter((p) => p.featured);
+---
+
+<section id="projects" class="border-t border-navy-700/50 px-6 py-20 sm:py-28" aria-labelledby="projects-heading">
+  <div class="mx-auto max-w-6xl">
+    <SectionHeading
+      id="projects-heading"
+      label="projects"
+      title="Featured work"
+      description="Open source desktop tools and AI utilities — shipped, versioned, and maintained on GitHub."
+    />
+
+    <div class="grid gap-8 md:grid-cols-2">
+      {featured.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </div>
+</section>

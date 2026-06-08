@@ -1,0 +1,37 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-navy-700/50 px-6 py-10">
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
+    <p class="font-mono text-xs text-slate-500">
+      <span class="text-teal-500">©</span> {year} Hesam Samani · hesamsamani.codes
+    </p>
+
+    <nav aria-label="Footer navigation">
+      <ul class="flex flex-wrap items-center justify-center gap-6">
+        <li>
+          <a
+            href="https://hesamsamani.me"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-mono text-xs text-slate-400 transition-colors hover:text-teal-400"
+          >
+            hesamsamani.me
+            <span class="ml-1 text-slate-600">— professional inquiries</span>
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/Hesamsamani"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-mono text-xs text-slate-400 transition-colors hover:text-teal-400"
+          >
+            GitHub
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</footer>

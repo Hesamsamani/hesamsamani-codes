@@ -1,0 +1,57 @@
+---
+const stats = [
+  { label: 'repos', value: '10+' },
+  { label: 'license', value: 'MIT' },
+  { label: 'focus', value: 'desktop' },
+];
+---
+
+<section class="border-t border-navy-700/50 px-6 py-20 sm:py-28" aria-labelledby="opensource-heading">
+  <div class="mx-auto max-w-6xl">
+    <div
+      class="terminal-border relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-800/80 to-navy-900/60 p-8 sm:p-12"
+    >
+      <div
+        class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-teal-500/10 blur-3xl"
+        aria-hidden="true"
+      ></div>
+
+      <div class="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-[0.2em] text-teal-500">
+            <span class="text-slate-500">//</span> open source
+          </p>
+          <h2 id="opensource-heading" class="mt-3 font-display text-2xl font-bold text-white sm:text-3xl">
+            Code you can read, fork, and improve
+          </h2>
+          <p class="mt-4 max-w-lg text-slate-400">
+            Every project here is on GitHub. Issues, PRs, and stars welcome — I build in the
+            open so others can learn from and extend the work.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-4 sm:flex-row lg:flex-col lg:items-end">
+          <div class="flex gap-6 font-mono text-sm" aria-label="Open source highlights">
+            {
+              stats.map((stat) => (
+                <div class="text-center">
+                  <p class="text-lg font-semibold text-teal-400">{stat.value}</p>
+                  <p class="text-xs uppercase tracking-widest text-slate-500">{stat.label}</p>
+                </div>
+              ))
+            }
+          </div>
+          <a
+            href="https://github.com/Hesamsamani"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="glow-teal inline-flex items-center justify-center gap-2 rounded-lg bg-teal-500 px-8 py-3 font-mono text-sm font-medium text-navy-950 transition-all hover:bg-teal-400"
+          >
+            github.com/Hesamsamani
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

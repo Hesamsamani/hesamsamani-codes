@@ -1,0 +1,30 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { techStack } from '../data/tech';
+---
+
+<section id="stack" class="border-t border-navy-700/50 px-6 py-20 sm:py-28" aria-labelledby="stack-heading">
+  <div class="mx-auto max-w-6xl">
+    <SectionHeading
+      id="stack-heading"
+      label="stack"
+      title="Tech I ship with"
+      description="The toolchain behind my desktop apps, document pipelines, and CI workflows."
+    />
+
+    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" role="list">
+      {
+        techStack.map((tech) => (
+          <li>
+            <div class="terminal-border flex h-full flex-col rounded-lg bg-navy-900/40 px-4 py-4 transition-all hover:border-teal-500/25">
+              <span class="font-mono text-[10px] uppercase tracking-widest text-slate-500">
+                {tech.category}
+              </span>
+              <span class="mt-1 font-display text-base font-semibold text-white">{tech.name}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
