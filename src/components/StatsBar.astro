@@ -1,0 +1,57 @@
+---
+const stats = [
+  { value: '2', suffix: '+', label: 'Open Source Projects' },
+  { value: '17', suffix: '', label: 'GitHub Topics' },
+  { value: '100', suffix: '%', label: 'Local-First' },
+  { value: '0', suffix: '', label: 'Cloud Lock-in' },
+];
+---
+
+<section class="border-y border-navy-700/50 px-6 py-12" aria-label="Developer stats">
+  <div class="mx-auto grid max-w-6xl grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
+    {
+      stats.map((stat) => (
+        <div class="text-center">
+          <p class="font-display text-3xl font-bold text-teal-400 md:text-4xl" data-stat={stat.value} data-suffix={stat.suffix}>
+            {stat.value}{stat.suffix}
+          </p>
+          <p class="mt-2 font-mono text-xs uppercase tracking-widest text-slate-500">{stat.label}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const animateStats = () => {
+    document.querySelectorAll<HTMLElement>('[data-stat]').forEach((el) => {
+      const target = Number(el.dataset.stat ?? '0');
+      const suffix = el.dataset.suffix ?? '';
+      const duration = 1000;
+      const start = performance.now();
+
+      const tick = (now: number) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = `${Math.round(target * eased)}${suffix}`;
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+
+      requestAnimationFrame(tick);
+    });
+  };
+
+  const section = document.querySelector('[aria-label="Developer stats"]');
+  if (section) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          animateStats();
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(section);
+  }
+</script>

@@ -1,0 +1,91 @@
+---
+const storageKey = 'hesam-codes-intro-seen';
+---
+
+<div
+  id="codes-intro"
+  class="codes-intro fixed inset-0 z-[200] flex items-center justify-center bg-navy-950"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="codes-intro-title"
+>
+  <div id="intro-particles" class="intro-particles" aria-hidden="true"></div>
+  <div class="absolute inset-0 scanline opacity-40" aria-hidden="true"></div>
+
+  <div class="relative mx-auto w-full max-w-lg px-8 text-center">
+    <p class="font-mono text-xs text-teal-500">initializing developer portfolio...</p>
+    <h1 id="codes-intro-title" class="mt-8 font-display text-4xl font-extrabold text-white">
+      hesam<span class="text-teal-400">.codes</span>
+    </h1>
+    <p class="intro-tagline mt-4 font-mono text-sm text-slate-400">Open source · Python · AI tools</p>
+
+    <div class="intro-progress-track mx-auto mt-8 h-1 max-w-xs overflow-hidden rounded-full bg-navy-800">
+      <div id="intro-progress-bar" class="intro-progress-bar h-full w-0 rounded-full bg-teal-500"></div>
+    </div>
+
+    <button
+      type="button"
+      id="enter-codes"
+      class="intro-enter-btn mt-10 hidden rounded-lg bg-teal-500 px-8 py-3.5 font-mono text-sm font-medium text-navy-950 opacity-0 transition-all hover:bg-teal-400"
+    >
+      Enter Site →
+    </button>
+  </div>
+</div>
+
+<script define:vars={{ storageKey }}>
+  const intro = document.getElementById('codes-intro');
+  const enterBtn = document.getElementById('enter-codes');
+  const bar = document.getElementById('intro-progress-bar');
+  const tagline = document.querySelector('.intro-tagline');
+  const particleRoot = document.getElementById('intro-particles');
+
+  if (particleRoot) {
+    const count = window.innerWidth <= 768 ? 16 : 40;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('span');
+      p.className = 'intro-particle';
+      p.style.left = `${Math.random() * 100}%`;
+      p.style.top = `${Math.random() * 100}%`;
+      p.style.animationDelay = `${Math.random() * 4}s`;
+      particleRoot.appendChild(p);
+    }
+  }
+
+  if (sessionStorage.getItem(storageKey) === '1') {
+    intro?.remove();
+  } else if (intro) {
+    document.body.style.overflow = 'hidden';
+  }
+
+  let progress = 0;
+  const tick = window.setInterval(() => {
+    if (!bar) return;
+    progress += Math.random() * 12 + 4;
+    if (progress >= 100) {
+      progress = 100;
+      bar.style.width = '100%';
+      window.clearInterval(tick);
+      window.setTimeout(() => {
+        tagline?.classList.add('hidden');
+        enterBtn?.classList.remove('hidden');
+        enterBtn?.classList.add('intro-enter-btn--visible');
+      }, 280);
+    } else {
+      bar.style.width = `${progress}%`;
+    }
+  }, 110);
+
+  const dismissIntro = () => {
+    if (!intro) return;
+    intro.classList.add('codes-intro--exit');
+    sessionStorage.setItem(storageKey, '1');
+    window.setTimeout(() => intro.remove(), 450);
+    document.body.style.overflow = '';
+    if (typeof window.startPortfolioMusic === 'function') {
+      window.startPortfolioMusic();
+    }
+  };
+
+  enterBtn?.addEventListener('click', dismissIntro);
+</script>

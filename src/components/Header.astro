@@ -19,19 +19,27 @@ const navLinks = [
       <span class="text-slate-500">~/</span>hesam<span class="text-slate-400">.codes</span>
     </a>
 
-    <ul class="hidden items-center gap-8 sm:flex">
+    <ul class="hidden items-center gap-8 sm:flex" data-nav-links>
       {
         navLinks.map((link) => (
           <li>
             <a
               href={link.href}
-              class="font-mono text-xs uppercase tracking-widest text-slate-400 transition-colors hover:text-teal-400"
+              class="nav-section-link font-mono text-xs uppercase tracking-widest text-slate-400 transition-colors hover:text-teal-400"
             >
               {link.label}
             </a>
           </li>
         ))
       }
+      <li>
+        <a
+          href="https://hesamsamani.me"
+          class="font-mono text-xs uppercase tracking-widest text-slate-500 transition-colors hover:text-cyan-400"
+        >
+          .me
+        </a>
+      </li>
     </ul>
 
     <div class="flex items-center gap-3">
@@ -141,4 +149,31 @@ const navLinks = [
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') setMenuOpen(false);
   });
+
+  const sectionLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.nav-section-link'));
+  const sections = sectionLinks
+    .map((link) => {
+      const id = link.getAttribute('href')?.slice(1);
+      const section = id ? document.getElementById(id) : null;
+      return section ? { link, section } : null;
+    })
+    .filter((entry): entry is { link: HTMLAnchorElement; section: HTMLElement } => entry !== null);
+
+  const highlightNav = () => {
+    const offset = 100;
+    let current = sections[0]?.link;
+
+    sections.forEach(({ link, section }) => {
+      if (section.getBoundingClientRect().top - offset <= 0) {
+        current = link;
+      }
+    });
+
+    sectionLinks.forEach((link) => {
+      link.classList.toggle('nav-link-active', link === current);
+    });
+  };
+
+  highlightNav();
+  window.addEventListener('scroll', highlightNav, { passive: true });
 </script>

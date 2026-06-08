@@ -74,4 +74,126 @@
       rgba(46, 232, 200, 0.015) 4px
     );
   }
+
+  .nav-link-active {
+    @apply text-teal-400;
+  }
+
+  .codes-intro {
+    transition: opacity 0.45s ease, visibility 0.45s ease;
+  }
+
+  .codes-intro--exit {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .social-link {
+    @apply inline-flex items-center gap-2 rounded-lg border border-navy-600/80 bg-navy-800/40 px-3 py-2 font-mono text-xs text-slate-300 transition-all hover:border-teal-500/30 hover:text-teal-400;
+    box-shadow:
+      inset 0 1px 0 0 rgba(46, 232, 200, 0.06),
+      0 0 0 1px rgba(10, 18, 32, 0.5);
+  }
+
+  .intro-particles {
+    @apply pointer-events-none absolute inset-0 overflow-hidden;
+  }
+
+  .intro-particle {
+    @apply absolute h-1 w-1 rounded-full bg-teal-400/70;
+    animation: intro-float 4s ease-in-out infinite;
+  }
+
+  .intro-enter-btn--visible {
+    @apply opacity-100;
+  }
+
+  .ambient-canvas {
+    @apply pointer-events-none fixed inset-0 z-[1];
+  }
+
+  .hero-particle-canvas {
+    @apply pointer-events-none absolute inset-0 z-0 h-full w-full;
+  }
+
+  .hero-cursor,
+  .hero-cursor-dot {
+    @apply pointer-events-none fixed z-[90] hidden rounded-full;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-cursor {
+    @apply h-10 w-10 border border-teal-500/40;
+  }
+
+  .hero-cursor.is-visible,
+  .hero-cursor-dot.is-visible {
+    @apply block;
+  }
+
+  .hero-cursor-dot {
+    @apply h-1.5 w-1.5 bg-teal-400;
+  }
+
+  body.custom-cursor-active [data-hero-section] a,
+  body.custom-cursor-active [data-hero-section] button {
+    cursor: none;
+  }
+
+  .music-player {
+    @apply fixed bottom-6 right-6 z-[80];
+  }
+
+  .music-toggle {
+    @apply relative flex h-12 w-12 items-center justify-center rounded-full border border-teal-500/30 bg-navy-900/90 text-teal-400 shadow-lg backdrop-blur-md transition-all hover:border-teal-400/50;
+  }
+
+  .music-toggle.is-playing .music-pulse {
+    @apply absolute inset-0 rounded-full border border-teal-500/50;
+    animation: music-pulse 2s ease-out infinite;
+  }
+
+  .music-widget {
+    @apply absolute bottom-14 right-0 w-64 translate-y-2 rounded-xl border border-navy-600/80 bg-navy-900/95 p-4 opacity-0 shadow-xl backdrop-blur-md transition-all pointer-events-none;
+  }
+
+  .music-widget.is-open {
+    @apply translate-y-0 opacity-100 pointer-events-auto;
+  }
+
+  .audio-controls {
+    @apply mt-3 flex items-center gap-3;
+  }
+
+  .audio-play-btn {
+    @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-teal-500/20 text-teal-300;
+  }
+
+  .audio-progress-wrap {
+    @apply relative h-1.5 flex-1 cursor-pointer overflow-hidden rounded-full bg-navy-700;
+  }
+
+  .audio-progress-bar {
+    @apply absolute inset-y-0 left-0 rounded-full bg-teal-500;
+    width: 0%;
+  }
+
+  .audio-time {
+    @apply font-mono text-[10px] text-slate-500;
+  }
+
+  .music-label {
+    @apply mt-3 text-[10px] text-slate-500;
+  }
+}
+
+@keyframes intro-float {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(-10px); opacity: 0.9; }
+}
+
+@keyframes music-pulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
