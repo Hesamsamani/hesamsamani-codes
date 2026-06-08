@@ -268,7 +268,38 @@
     animateCursor();
   }
 
-  /* ── Music player ── */
+  /* ── Music player (skip silent intro) ── */
+  const MUSIC_FALLBACK_START = 5.5;
+  let musicStartOffset = MUSIC_FALLBACK_START;
+  let musicOffsetReady = false;
+
+  const detectAudibleStart = async (audioEl) => {
+    const src = audioEl.querySelector('source')?.src;
+    if (!src) return MUSIC_FALLBACK_START;
+    try {
+      const ctx = new AudioContext();
+      const res = await fetch(src);
+      const buf = await ctx.decodeAudioData(await res.arrayBuffer());
+      const data = buf.getChannelData(0);
+      const sampleRate = buf.sampleRate;
+      const threshold = 0.006;
+      const windowSize = Math.floor(sampleRate * 0.04);
+      for (let i = 0; i < data.length - windowSize; i += windowSize) {
+        let sum = 0;
+        for (let j = 0; j < windowSize; j++) sum += Math.abs(data[i + j]);
+        if (sum / windowSize > threshold) {
+          const seconds = Math.max(0, i / sampleRate - 0.15);
+          await ctx.close();
+          return seconds;
+        }
+      }
+      await ctx.close();
+    } catch {
+      /* decode or fetch failed — use fallback */
+    }
+    return MUSIC_FALLBACK_START;
+  };
+
   const musicToggle = document.getElementById('music-toggle');
   const musicWidget = document.getElementById('music-widget');
   const bgAudio = document.getElementById('bg-audio');
@@ -298,11 +329,42 @@
     musicToggle?.classList.toggle('is-playing', playing);
   };
 
-  window.startPortfolioMusic = () => {
+  const ensureAudiblePosition = () => {
+    if (!bgAudio || !musicOffsetReady) return;
+    if (bgAudio.currentTime < musicStartOffset - 0.25) {
+      bgAudio.currentTime = musicStartOffset;
+    }
+  };
+
+  const playMusic = async () => {
     if (!bgAudio) return;
+    if (!musicOffsetReady) {
+      musicStartOffset = await detectAudibleStart(bgAudio);
+      musicOffsetReady = true;
+    }
     bgAudio.volume = 0.35;
+    ensureAudiblePosition();
     bgAudio.play().then(() => setPlayingUI(true)).catch(() => {});
   };
+
+  window.startPortfolioMusic = playMusic;
+
+  if (bgAudio) {
+    detectAudibleStart(bgAudio).then((offset) => {
+      musicStartOffset = offset;
+      musicOffsetReady = true;
+    });
+
+    bgAudio.addEventListener('timeupdate', () => {
+      if (!bgAudio.duration) return;
+      if (isPlaying && bgAudio.currentTime < 1 && musicOffsetReady) {
+        bgAudio.currentTime = musicStartOffset;
+      }
+      const pct = (bgAudio.currentTime / bgAudio.duration) * 100;
+      if (audioProgressBar) audioProgressBar.style.width = `${pct}%`;
+      if (audioTimeEl) audioTimeEl.textContent = formatTime(bgAudio.currentTime);
+    });
+  }
 
   if (musicToggle && musicWidget && bgAudio) {
     musicToggle.addEventListener('click', () => {
@@ -311,7 +373,7 @@
       musicToggle.setAttribute('aria-expanded', String(widgetOpen));
       iconNote?.classList.toggle('hidden', widgetOpen);
       iconClose?.classList.toggle('hidden', !widgetOpen);
-      if (widgetOpen && !isPlaying) window.startPortfolioMusic();
+      if (widgetOpen && !isPlaying) playMusic();
     });
 
     audioPlayBtn?.addEventListener('click', () => {
@@ -319,22 +381,14 @@
         bgAudio.pause();
         setPlayingUI(false);
       } else {
-        bgAudio.volume = 0.35;
-        bgAudio.play().then(() => setPlayingUI(true)).catch(() => {});
+        playMusic();
       }
-    });
-
-    bgAudio.addEventListener('timeupdate', () => {
-      if (!bgAudio.duration) return;
-      const pct = (bgAudio.currentTime / bgAudio.duration) * 100;
-      if (audioProgressBar) audioProgressBar.style.width = `${pct}%`;
-      if (audioTimeEl) audioTimeEl.textContent = formatTime(bgAudio.currentTime);
     });
 
     audioProgressWrap?.addEventListener('click', (e) => {
       const rect = audioProgressWrap.getBoundingClientRect();
       const pct = (e.clientX - rect.left) / rect.width;
-      bgAudio.currentTime = pct * bgAudio.duration;
+      bgAudio.currentTime = Math.max(musicStartOffset, pct * bgAudio.duration);
     });
   }
 
