@@ -19,7 +19,7 @@ export const projects: Project[] = [
     url: 'https://github.com/Hesamsamani/Distilmark',
     version: 'v1.5.0',
     tags: ['Python', 'PyQt6', 'PyMuPDF', 'Ollama', 'Desktop'],
-    image: '/images/distilmark.svg',
+    image: '/images/distilmark.png',
     imageAlt: 'Distilmark PDF to Markdown converter dark mode screenshot',
     featured: true,
   },
