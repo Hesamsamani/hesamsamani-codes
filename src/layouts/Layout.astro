@@ -7,11 +7,13 @@ interface Props {
 }
 
 const {
-  title = 'Hesam Samani — Developer Portfolio',
+  title = 'Hesam Samani — AI Tool Builder',
   description = 'Python & AI tool builder. Privacy-first desktop apps, open source projects, and developer tools by Hesam Samani.',
 } = Astro.props;
 
+const siteURL = 'https://hesamsamani.codes';
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og.svg', siteURL).href;
 ---
 
 <!doctype html>
@@ -31,13 +33,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       rel="stylesheet"
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:url" content={siteURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={title} />
     <meta property="og:site_name" content="hesamsamani.codes" />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={title} />
     <title>{title}</title>
   </head>
   <body class="relative min-h-screen overflow-x-hidden">
