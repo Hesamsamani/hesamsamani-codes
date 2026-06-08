@@ -34,14 +34,111 @@ const navLinks = [
       }
     </ul>
 
-    <a
-      href="https://github.com/Hesamsamani"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="terminal-border rounded-md bg-navy-800/60 px-3 py-1.5 font-mono text-xs text-teal-400 transition-all hover:border-teal-500/40 hover:bg-navy-700/60"
-      aria-label="GitHub profile (opens in new tab)"
-    >
-      <span class="text-slate-500">$</span> gh
-    </a>
+    <div class="flex items-center gap-3">
+      <a
+        href="https://github.com/Hesamsamani"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="terminal-border rounded-md bg-navy-800/60 px-3 py-1.5 font-mono text-xs text-teal-400 transition-all hover:border-teal-500/40 hover:bg-navy-700/60"
+        aria-label="GitHub profile (opens in new tab)"
+      >
+        <span class="text-slate-500">$</span> gh
+      </a>
+
+      <button
+        type="button"
+        class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-navy-600/80 bg-navy-800/60 text-slate-300 transition-colors hover:border-teal-500/40 hover:text-teal-400 sm:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        data-menu-toggle
+      >
+        <svg
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+          data-menu-icon-open
+        >
+          <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+        <svg
+          class="hidden h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+          data-menu-icon-close
+        >
+          <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
   </nav>
+
+  <div
+    id="mobile-nav"
+    class="hidden border-t border-navy-600/50 bg-navy-950/95 px-6 py-4 sm:hidden"
+    data-mobile-nav
+  >
+    <ul class="flex flex-col gap-4">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="block font-mono text-sm uppercase tracking-widest text-slate-300 transition-colors hover:text-teal-400"
+              data-mobile-nav-link
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="border-t border-navy-700/50 pt-4">
+        <a
+          href="https://github.com/Hesamsamani"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block font-mono text-sm text-teal-400 transition-colors hover:text-cyan-400"
+        >
+          GitHub ↗
+        </a>
+      </li>
+    </ul>
+  </div>
 </header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const mobileNav = document.querySelector<HTMLElement>('[data-mobile-nav]');
+  const iconOpen = document.querySelector<SVGElement>('[data-menu-icon-open]');
+  const iconClose = document.querySelector<SVGElement>('[data-menu-icon-close]');
+  const mobileLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-mobile-nav-link]'));
+
+  const setMenuOpen = (open: boolean) => {
+    if (!toggle || !mobileNav || !iconOpen || !iconClose) return;
+
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    mobileNav.classList.toggle('hidden', !open);
+    iconOpen.classList.toggle('hidden', open);
+    iconClose.classList.toggle('hidden', !open);
+  };
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    setMenuOpen(!isOpen);
+  });
+
+  mobileLinks.forEach((link) => {
+    link.addEventListener('click', () => setMenuOpen(false));
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setMenuOpen(false);
+  });
+</script>

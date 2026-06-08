@@ -1,43 +1,35 @@
-# Astro Starter Kit: Minimal
+# hesamsamani.codes
+
+Personal portfolio for **Hesam Samani** — open source Python desktop apps and AI-powered developer tools.
+
+Featured projects include [Distilmark](https://github.com/Hesamsamani/Distilmark) (8-engine PDF → Markdown converter with local AI) and [CourseraGrab](https://github.com/Hesamsamani/CourseraGrab) (offline Coursera course downloader).
+
+Built with [Astro](https://astro.build) and Tailwind CSS, deployed to Vercel at **https://hesamsamani.codes**.
+
+## Development
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # production build → ./dist/
+npm run preview  # preview production build locally
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Deploy & DNS
 
-## 🚀 Project Structure
+This site deploys to Vercel. To point **hesamsamani.codes** at the deployment, follow the step-by-step DNS instructions in **[DNS-SETUP.md](./DNS-SETUP.md)**.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Project structure
 
 ```text
 /
-├── public/
+├── public/           # Static assets (images, favicon)
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/   # Astro UI components
+│   ├── data/         # Projects and tech stack data
+│   ├── layouts/      # Page layouts
+│   ├── pages/        # Routes (index.astro → /)
+│   └── styles/       # Global CSS
+├── DNS-SETUP.md      # Domain & Vercel DNS guide
+└── vercel.json       # Vercel deployment config
 ```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

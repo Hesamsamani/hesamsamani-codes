@@ -1,3 +1,5 @@
+export type ProjectCategory = 'Desktop' | 'AI' | 'Education';
+
 export interface Project {
   name: string;
   description: string;
@@ -5,6 +7,7 @@ export interface Project {
   url: string;
   version?: string;
   tags: string[];
+  category: ProjectCategory[];
   image: string;
   imageAlt: string;
   featured: boolean;
@@ -19,17 +22,20 @@ export const projects: Project[] = [
     url: 'https://github.com/Hesamsamani/Distilmark',
     version: 'v1.5.0',
     tags: ['Python', 'PyQt6', 'PyMuPDF', 'Ollama', 'Desktop'],
+    category: ['Desktop', 'AI'],
     image: '/images/distilmark.png',
-    imageAlt: 'Distilmark PDF to Markdown converter dark mode screenshot',
+    imageAlt:
+      'Distilmark Convert page screenshot with sidebar navigation, PDF drop zone, Native PyMuPDF engine selected, and conversion options in dark mode',
     featured: true,
   },
   {
     name: 'CourseraGrab',
-    description: 'Offline Coursera course downloader',
+    description: 'Offline Coursera course downloader — 17 GitHub topics',
     longDescription:
-      'Privacy-first desktop tool for downloading Coursera courses for offline study. Built with PyQt5 and designed for learners who want their materials available without a connection.',
+      'Privacy-first desktop tool for downloading Coursera courses for offline study. Built with PyQt5 and tagged across 17 GitHub topics for learners who want their materials available without a connection.',
     url: 'https://github.com/Hesamsamani/CourseraGrab',
     tags: ['Python', 'PyQt5', 'Desktop', 'Offline'],
+    category: ['Desktop', 'Education'],
     image: '/images/courseragrab.svg',
     imageAlt: 'CourseraGrab project placeholder',
     featured: true,

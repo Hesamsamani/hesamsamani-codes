@@ -1,9 +1,15 @@
 ---
 import SectionHeading from './SectionHeading.astro';
 import ProjectCard from './ProjectCard.astro';
-import { projects } from '../data/projects';
+import { projects, type ProjectCategory } from '../data/projects';
 
 const featured = projects.filter((p) => p.featured);
+const filterChips: { label: string; value: ProjectCategory | 'all' }[] = [
+  { label: 'All', value: 'all' },
+  { label: 'Desktop', value: 'Desktop' },
+  { label: 'AI', value: 'AI' },
+  { label: 'Education', value: 'Education' },
+];
 ---
 
 <section id="projects" class="border-t border-navy-700/50 px-6 py-20 sm:py-28" aria-labelledby="projects-heading">
@@ -15,8 +21,93 @@ const featured = projects.filter((p) => p.featured);
       description="Open source desktop tools and AI utilities — shipped, versioned, and maintained on GitHub."
     />
 
-    <div class="grid gap-8 md:grid-cols-2">
-      {featured.map((project) => <ProjectCard project={project} />)}
+    <div
+      class="mb-10 flex flex-wrap gap-2"
+      role="group"
+      aria-label="Filter projects by category"
+      data-project-filters
+    >
+      {
+        filterChips.map((chip) => (
+          <button
+            type="button"
+            class:list={[
+              'rounded-full border px-4 py-1.5 font-mono text-xs uppercase tracking-widest transition-all',
+              chip.value === 'all'
+                ? 'border-teal-500/50 bg-teal-500/15 text-teal-400'
+                : 'border-navy-600/80 bg-navy-800/40 text-slate-400 hover:border-teal-500/30 hover:text-teal-400',
+            ]}
+            data-filter={chip.value}
+            aria-pressed={chip.value === 'all' ? 'true' : 'false'}
+          >
+            {chip.label}
+          </button>
+        ))
+      }
     </div>
+
+    <div class="grid gap-8 md:grid-cols-2" data-project-grid>
+      {
+        featured.map((project) => (
+          <div data-project-card data-categories={project.category.join(',')}>
+            <ProjectCard project={project} />
+          </div>
+        ))
+      }
+    </div>
+
+    <p
+      class="mt-8 hidden text-center font-mono text-sm text-slate-500"
+      data-project-empty
+      role="status"
+    >
+      No projects in this category yet.
+    </p>
   </div>
 </section>
+
+<script>
+  const filterRoot = document.querySelector('[data-project-filters]');
+  const grid = document.querySelector('[data-project-grid]');
+  const emptyState = document.querySelector('[data-project-empty]');
+
+  if (filterRoot && grid) {
+    const cards = Array.from(grid.querySelectorAll('[data-project-card]'));
+    const buttons = Array.from(filterRoot.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+
+    const setActiveButton = (active: HTMLButtonElement) => {
+      buttons.forEach((button) => {
+        const isActive = button === active;
+        button.setAttribute('aria-pressed', String(isActive));
+        button.classList.toggle('border-teal-500/50', isActive);
+        button.classList.toggle('bg-teal-500/15', isActive);
+        button.classList.toggle('text-teal-400', isActive);
+        button.classList.toggle('border-navy-600/80', !isActive);
+        button.classList.toggle('bg-navy-800/40', !isActive);
+        button.classList.toggle('text-slate-400', !isActive);
+      });
+    };
+
+    const applyFilter = (filter: string) => {
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const categories = (card.getAttribute('data-categories') ?? '').split(',');
+        const isVisible = filter === 'all' || categories.includes(filter);
+        card.classList.toggle('hidden', !isVisible);
+        if (isVisible) visibleCount += 1;
+      });
+
+      emptyState?.classList.toggle('hidden', visibleCount > 0);
+    };
+
+    filterRoot.addEventListener('click', (event) => {
+      const target = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-filter]');
+      if (!target) return;
+
+      const filter = target.dataset.filter ?? 'all';
+      setActiveButton(target);
+      applyFilter(filter);
+    });
+  }
+</script>
