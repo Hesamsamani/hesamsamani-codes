@@ -4,9 +4,21 @@ Point your domain to Vercel so the Astro portfolio deploys at **https://hesamsam
 
 ## Prerequisites
 
-1. Push this repo to GitHub: `https://github.com/Hesamsamani/hesamsamani-codes`
-2. Import the project in [Vercel](https://vercel.com/new)
+1. Deploy the site to Vercel — see **[DEPLOY.md](./DEPLOY.md)** (CLI login or dashboard import)
+2. Push this repo to GitHub: `https://github.com/Hesamsamani/hesamsamani-codes` (if using Git-based deploy)
 3. Set the production domain to `hesamsamani.codes` in **Project Settings → Domains**
+
+## Vercel project URL
+
+> **Pending first deploy.** After you deploy, paste the production URL here:
+
+| Item | Value |
+|------|-------|
+| **Vercel project** | `hesamsamani-codes` |
+| **Default production URL** | `https://hesamsamani-codes.vercel.app` *(or team-scoped variant)* |
+| **Custom domain (target)** | `https://hesamsamani.codes` |
+
+To find the exact URL: Vercel dashboard → your project → **Deployments** → latest **Production** deployment → **Visit**.
 
 ## DNS records
 
