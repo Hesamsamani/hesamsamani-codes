@@ -5,21 +5,74 @@
   const isMobile = window.innerWidth <= 768;
 
   const theme = {
+    grid: 'rgba(46, 232, 200,',
     node: 'rgba(46, 232, 200,',
-    glow: 'rgba(46, 232, 200,',
+    beam: 'rgba(92, 225, 255,',
+    glow: 'rgba(20, 212, 184,',
     particle: 'rgba(92, 225, 255,',
     particleGlow: 'rgba(20, 212, 184,',
   };
 
+  const HEX_R = isMobile ? 24 : 32;
+
+  const drawHex = (ctx, cx, cy, r) => {
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const angle = (Math.PI / 3) * i - Math.PI / 6;
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.stroke();
+  };
+
+  const drawHexGrid = (ctx, width, height, offsetX, offsetY, alpha) => {
+    const r = HEX_R;
+    const h = r * Math.sqrt(3);
+    const w = r * 1.5;
+    ctx.strokeStyle = `${theme.grid}${alpha})`;
+    ctx.lineWidth = 0.55;
+    for (let row = -1; row < height / (h * 0.5) + 2; row++) {
+      for (let col = -1; col < width / w + 2; col++) {
+        const x = col * w + offsetX + (row % 2 ? w * 0.5 : 0);
+        const y = row * (h * 0.5) + offsetY;
+        drawHex(ctx, x, y, r);
+      }
+    }
+  };
+
+  const bindPointer = (target, onMove) => {
+    target.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY));
+    target.addEventListener(
+      'touchstart',
+      (e) => {
+        const t = e.touches[0];
+        if (t) onMove(t.clientX, t.clientY);
+      },
+      { passive: true }
+    );
+    target.addEventListener(
+      'touchmove',
+      (e) => {
+        const t = e.touches[0];
+        if (t) onMove(t.clientX, t.clientY);
+      },
+      { passive: true }
+    );
+  };
+
   /* ── Ambient full-page canvas ── */
   const ambientCanvas = document.getElementById('ambient-canvas');
-  if (ambientCanvas && prefersHover) {
+  if (ambientCanvas) {
     const ctx = ambientCanvas.getContext('2d');
     let mouse = { x: -9999, y: -9999 };
     const nodes = [];
-    const NODE_COUNT = isMobile ? 18 : 42;
-    const MOUSE_FIELD = 200;
-    const CONNECT_DIST = 130;
+    const NODE_COUNT = isMobile ? 18 : 40;
+    const MOUSE_FIELD = isMobile ? 150 : 200;
+    const CONNECT_DIST = HEX_R * 3;
+    let gridOffset = 0;
 
     const resize = () => {
       ambientCanvas.width = window.innerWidth;
@@ -27,9 +80,9 @@
     };
     resize();
     window.addEventListener('resize', resize);
-    document.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
+    bindPointer(document, (x, y) => {
+      mouse.x = x;
+      mouse.y = y;
     });
 
     class Node {
@@ -44,14 +97,14 @@
         this.vx = this.baseVx;
         this.vy = this.baseVy;
         this.r = 1.5 + Math.random() * 2;
-        this.alpha = 0.1 + Math.random() * 0.12;
+        this.alpha = 0.1 + Math.random() * 0.14;
       }
       update() {
         const dx = mouse.x - this.x;
         const dy = mouse.y - this.y;
         const dist = Math.hypot(dx, dy);
         if (dist < MOUSE_FIELD && dist > 1) {
-          const force = ((MOUSE_FIELD - dist) / MOUSE_FIELD) * 0.07;
+          const force = ((MOUSE_FIELD - dist) / MOUSE_FIELD) * 0.08;
           this.vx += (dx / dist) * force;
           this.vy += (dy / dist) * force;
         }
@@ -75,10 +128,12 @@
     for (let i = 0; i < NODE_COUNT; i++) nodes.push(new Node());
 
     const animate = () => {
+      gridOffset += 0.1;
       ctx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+      drawHexGrid(ctx, ambientCanvas.width, ambientCanvas.height, gridOffset * 0.2, gridOffset * 0.15, 0.07);
 
-      const grd = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 180);
-      grd.addColorStop(0, `${theme.glow}0.06)`);
+      const grd = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, isMobile ? 130 : 180);
+      grd.addColorStop(0, `${theme.glow}0.1)`);
       grd.addColorStop(1, `${theme.glow}0)`);
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
@@ -97,7 +152,7 @@
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `${theme.node}${0.05 * (1 - dist / CONNECT_DIST)})`;
+            ctx.strokeStyle = `${theme.node}${0.06 * (1 - dist / CONNECT_DIST)})`;
             ctx.lineWidth = 0.6;
             ctx.stroke();
           }
@@ -113,13 +168,14 @@
   const heroCanvas = document.getElementById('hero-particle-canvas');
   const heroSection = document.querySelector('[data-hero-section]');
 
-  if (heroCanvas && heroSection && prefersHover) {
+  if (heroCanvas && heroSection) {
     const ctx = heroCanvas.getContext('2d');
     const particles = [];
-    const COUNT = isMobile ? 35 : 120;
+    const COUNT = isMobile ? 30 : 100;
     const CONNECT_DIST = isMobile ? 90 : 150;
-    const MOUSE_RADIUS = 240;
+    const MOUSE_RADIUS = isMobile ? 170 : 240;
     let mouse = { x: null, y: null };
+    let tick = 0;
 
     const resize = () => {
       heroCanvas.width = heroCanvas.offsetWidth;
@@ -128,12 +184,18 @@
     resize();
     window.addEventListener('resize', resize);
 
-    heroSection.addEventListener('mousemove', (e) => {
+    const setHeroPointer = (clientX, clientY) => {
       const rect = heroCanvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
-    });
+      mouse.x = clientX - rect.left;
+      mouse.y = clientY - rect.top;
+    };
+
+    bindPointer(heroSection, setHeroPointer);
     heroSection.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+    heroSection.addEventListener('touchend', () => {
       mouse.x = null;
       mouse.y = null;
     });
@@ -188,10 +250,13 @@
     for (let i = 0; i < COUNT; i++) particles.push(new Particle());
 
     const animate = () => {
+      tick += 0.3;
       ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+      drawHexGrid(ctx, heroCanvas.width, heroCanvas.height, tick, tick * 0.5, 0.08);
+
       if (mouse.x !== null) {
         const g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, MOUSE_RADIUS);
-        g.addColorStop(0, `${theme.particleGlow}0.18)`);
+        g.addColorStop(0, `${theme.particleGlow}0.2)`);
         g.addColorStop(1, `${theme.particleGlow}0)`);
         ctx.fillStyle = g;
         ctx.fillRect(0, 0, heroCanvas.width, heroCanvas.height);
@@ -233,7 +298,7 @@
     animate();
   }
 
-  /* ── Custom cursor in hero ── */
+  /* ── Custom cursor in hero (desktop only) ── */
   const heroCursor = document.getElementById('hero-cursor');
   const heroCursorDot = document.getElementById('hero-cursor-dot');
   let mouseX = 0;
@@ -268,10 +333,11 @@
     animateCursor();
   }
 
-  /* ── Music player (skip silent intro) ── */
+  /* ── Music player (auto-play, loop, skip silent intro) ── */
   const MUSIC_FALLBACK_START = 5.5;
   let musicStartOffset = MUSIC_FALLBACK_START;
   let musicOffsetReady = false;
+  let autoPlayRequested = false;
 
   const detectAudibleStart = async (audioEl) => {
     const src = audioEl.querySelector('source')?.src;
@@ -295,7 +361,7 @@
       }
       await ctx.close();
     } catch {
-      /* decode or fetch failed — use fallback */
+      /* use fallback */
     }
     return MUSIC_FALLBACK_START;
   };
@@ -330,9 +396,10 @@
   };
 
   const ensureAudiblePosition = () => {
-    if (!bgAudio || !musicOffsetReady) return;
-    if (bgAudio.currentTime < musicStartOffset - 0.25) {
-      bgAudio.currentTime = musicStartOffset;
+    if (!bgAudio) return;
+    const start = musicOffsetReady ? musicStartOffset : MUSIC_FALLBACK_START;
+    if (bgAudio.currentTime < start - 0.25) {
+      bgAudio.currentTime = start;
     }
   };
 
@@ -342,28 +409,66 @@
       musicStartOffset = await detectAudibleStart(bgAudio);
       musicOffsetReady = true;
     }
-    bgAudio.volume = 0.35;
+    bgAudio.loop = true;
+    bgAudio.volume = 0.38;
     ensureAudiblePosition();
-    bgAudio.play().then(() => setPlayingUI(true)).catch(() => {});
+    try {
+      await bgAudio.play();
+      setPlayingUI(true);
+      musicToggle?.classList.add('is-playing');
+    } catch {
+      /* blocked until user gesture */
+    }
   };
 
-  window.startPortfolioMusic = playMusic;
+  window.startPortfolioMusic = () => {
+    autoPlayRequested = true;
+    playMusic();
+  };
 
   if (bgAudio) {
+    bgAudio.loop = true;
     detectAudibleStart(bgAudio).then((offset) => {
       musicStartOffset = offset;
       musicOffsetReady = true;
+      if (autoPlayRequested) playMusic();
     });
 
     bgAudio.addEventListener('timeupdate', () => {
       if (!bgAudio.duration) return;
-      if (isPlaying && bgAudio.currentTime < 1 && musicOffsetReady) {
-        bgAudio.currentTime = musicStartOffset;
+      const start = musicOffsetReady ? musicStartOffset : MUSIC_FALLBACK_START;
+      if (isPlaying && bgAudio.currentTime < 1 && start > 1) {
+        bgAudio.currentTime = start;
       }
       const pct = (bgAudio.currentTime / bgAudio.duration) * 100;
       if (audioProgressBar) audioProgressBar.style.width = `${pct}%`;
       if (audioTimeEl) audioTimeEl.textContent = formatTime(bgAudio.currentTime);
     });
+
+    bgAudio.addEventListener('ended', () => {
+      bgAudio.currentTime = musicStartOffset;
+      bgAudio.play().catch(() => {});
+    });
+  }
+
+  const tryAutoPlay = () => {
+    if (!document.getElementById('codes-intro')) {
+      autoPlayRequested = true;
+      playMusic();
+    }
+  };
+
+  window.addEventListener('hesam:intro-dismissed', tryAutoPlay);
+  document.addEventListener(
+    'pointerdown',
+    () => {
+      if (!isPlaying && autoPlayRequested) playMusic();
+    },
+    { once: true }
+  );
+
+  if (!document.getElementById('codes-intro')) {
+    window.setTimeout(tryAutoPlay, 400);
   }
 
   if (musicToggle && musicWidget && bgAudio) {
@@ -373,7 +478,10 @@
       musicToggle.setAttribute('aria-expanded', String(widgetOpen));
       iconNote?.classList.toggle('hidden', widgetOpen);
       iconClose?.classList.toggle('hidden', !widgetOpen);
-      if (widgetOpen && !isPlaying) playMusic();
+      if (!isPlaying) {
+        autoPlayRequested = true;
+        playMusic();
+      }
     });
 
     audioPlayBtn?.addEventListener('click', () => {
@@ -381,6 +489,7 @@
         bgAudio.pause();
         setPlayingUI(false);
       } else {
+        autoPlayRequested = true;
         playMusic();
       }
     });
@@ -388,7 +497,8 @@
     audioProgressWrap?.addEventListener('click', (e) => {
       const rect = audioProgressWrap.getBoundingClientRect();
       const pct = (e.clientX - rect.left) / rect.width;
-      bgAudio.currentTime = Math.max(musicStartOffset, pct * bgAudio.duration);
+      const start = musicOffsetReady ? musicStartOffset : MUSIC_FALLBACK_START;
+      bgAudio.currentTime = Math.max(start, pct * bgAudio.duration);
     });
   }
 

@@ -186,6 +186,14 @@
   .music-label {
     @apply mt-3 text-[10px] text-slate-500;
   }
+
+  .site-logo {
+    @apply shrink-0;
+  }
+
+  .site-logo--teal {
+    filter: brightness(0) saturate(100%) invert(78%) sepia(42%) saturate(650%) hue-rotate(118deg) brightness(98%) contrast(96%);
+  }
 }
 
 @keyframes intro-float {

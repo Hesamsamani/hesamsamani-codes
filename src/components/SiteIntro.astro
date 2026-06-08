@@ -14,7 +14,12 @@ const storageKey = 'hesam-codes-intro-seen';
 
   <div class="relative mx-auto w-full max-w-lg px-8 text-center">
     <p class="font-mono text-xs text-teal-500">initializing developer portfolio...</p>
-    <div class="mx-auto mt-6 h-20 w-20 overflow-hidden rounded-xl border border-teal-500/40">
+
+    <div class="mx-auto mt-5 flex h-14 w-14 items-center justify-center">
+      <img src="/images/logo.png" alt="Hesam Samani logo" width="56" height="56" class="site-logo site-logo--teal h-12 w-12 object-contain" loading="eager" />
+    </div>
+
+    <div class="mx-auto mt-5 h-20 w-20 overflow-hidden rounded-xl border border-teal-500/40">
       <img src="/images/profile.png" alt="" width="80" height="80" class="h-full w-full object-cover object-[center_20%]" loading="eager" />
     </div>
     <h1 id="codes-intro-title" class="mt-6 font-display text-4xl font-extrabold text-white">
@@ -29,9 +34,11 @@ const storageKey = 'hesam-codes-intro-seen';
     <button
       type="button"
       id="enter-codes"
-      class="intro-enter-btn mt-10 hidden rounded-lg bg-teal-500 px-8 py-3.5 font-mono text-sm font-medium text-navy-950 opacity-0 transition-all hover:bg-teal-400"
+      class="intro-enter-btn mt-10 inline-flex items-center gap-2 rounded-lg bg-teal-500 px-8 py-3.5 font-mono text-sm font-medium text-navy-950 opacity-0 pointer-events-none transition-all hover:bg-teal-400"
+      aria-hidden="true"
+      tabindex="-1"
     >
-      Enter Site →
+      Continue →
     </button>
   </div>
 </div>
@@ -55,6 +62,15 @@ const storageKey = 'hesam-codes-intro-seen';
     }
   }
 
+  const showContinue = () => {
+    if (!enterBtn) return;
+    enterBtn.classList.remove('opacity-0', 'pointer-events-none');
+    enterBtn.classList.add('intro-enter-btn--visible');
+    enterBtn.removeAttribute('aria-hidden');
+    enterBtn.removeAttribute('tabindex');
+    enterBtn.focus();
+  };
+
   if (sessionStorage.getItem(storageKey) === '1') {
     intro?.remove();
   } else if (intro) {
@@ -71,8 +87,7 @@ const storageKey = 'hesam-codes-intro-seen';
       window.clearInterval(tick);
       window.setTimeout(() => {
         tagline?.classList.add('hidden');
-        enterBtn?.classList.remove('hidden');
-        enterBtn?.classList.add('intro-enter-btn--visible');
+        showContinue();
       }, 280);
     } else {
       bar.style.width = `${progress}%`;
@@ -85,6 +100,7 @@ const storageKey = 'hesam-codes-intro-seen';
     sessionStorage.setItem(storageKey, '1');
     window.setTimeout(() => intro.remove(), 450);
     document.body.style.overflow = '';
+    window.dispatchEvent(new CustomEvent('hesam:intro-dismissed'));
     if (typeof window.startPortfolioMusic === 'function') {
       window.startPortfolioMusic();
     }
