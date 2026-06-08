@@ -1,7 +1,3 @@
----
-const storageKey = 'hesam-codes-intro-seen';
----
-
 <div
   id="codes-intro"
   class="codes-intro fixed inset-0 z-[200] flex items-center justify-center bg-navy-950"
@@ -43,7 +39,7 @@ const storageKey = 'hesam-codes-intro-seen';
   </div>
 </div>
 
-<script define:vars={{ storageKey }}>
+<script>
   const intro = document.getElementById('codes-intro');
   const enterBtn = document.getElementById('enter-codes');
   const bar = document.getElementById('intro-progress-bar');
@@ -71,9 +67,7 @@ const storageKey = 'hesam-codes-intro-seen';
     enterBtn.focus();
   };
 
-  if (sessionStorage.getItem(storageKey) === '1') {
-    intro?.remove();
-  } else if (intro) {
+  if (intro) {
     document.body.style.overflow = 'hidden';
   }
 
@@ -97,7 +91,6 @@ const storageKey = 'hesam-codes-intro-seen';
   const dismissIntro = () => {
     if (!intro) return;
     intro.classList.add('codes-intro--exit');
-    sessionStorage.setItem(storageKey, '1');
     window.setTimeout(() => intro.remove(), 450);
     document.body.style.overflow = '';
     window.dispatchEvent(new CustomEvent('hesam:intro-dismissed'));
