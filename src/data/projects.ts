@@ -36,8 +36,9 @@ export const projects: Project[] = [
     url: 'https://github.com/Hesamsamani/CourseraGrab',
     tags: ['Python', 'PyQt5', 'Desktop', 'Offline'],
     category: ['Desktop', 'Education'],
-    image: '/images/courseragrab.svg',
-    imageAlt: 'CourseraGrab project placeholder',
+    image: '/images/courseragrab.png',
+    imageAlt:
+      'CourseraGrab PyQt5 desktop app screenshot with Download settings panel, My courses library, browser login, video quality and subtitle options, and dark theme',
     featured: true,
   },
 ];
