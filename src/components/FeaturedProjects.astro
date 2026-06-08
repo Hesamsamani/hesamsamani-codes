@@ -46,6 +46,15 @@ const filterChips: { label: string; value: ProjectCategory | 'all' }[] = [
       }
     </div>
 
+    <p
+      class="sr-only"
+      aria-live="polite"
+      aria-atomic="true"
+      data-project-filter-status
+    >
+      Showing {featured.length} projects
+    </p>
+
     <div class="grid gap-8 md:grid-cols-2" data-project-grid>
       {
         featured.map((project) => (
@@ -70,6 +79,7 @@ const filterChips: { label: string; value: ProjectCategory | 'all' }[] = [
   const filterRoot = document.querySelector('[data-project-filters]');
   const grid = document.querySelector('[data-project-grid]');
   const emptyState = document.querySelector('[data-project-empty]');
+  const filterStatus = document.querySelector('[data-project-filter-status]');
 
   if (filterRoot && grid) {
     const cards = Array.from(grid.querySelectorAll('[data-project-card]'));
@@ -99,6 +109,13 @@ const filterChips: { label: string; value: ProjectCategory | 'all' }[] = [
       });
 
       emptyState?.classList.toggle('hidden', visibleCount > 0);
+
+      if (filterStatus) {
+        filterStatus.textContent =
+          visibleCount === 1
+            ? 'Showing 1 project'
+            : `Showing ${visibleCount} projects`;
+      }
     };
 
     filterRoot.addEventListener('click', (event) => {
