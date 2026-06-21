@@ -14,6 +14,10 @@
 [![Vercel](https://img.shields.io/badge/deploy-Vercel-000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
+[![Python](https://img.shields.io/badge/stack-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![PyQt](https://img.shields.io/badge/desktop-PyQt-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://www.riverbankcomputing.com/software/pyqt/)
+[![React](https://img.shields.io/badge/web-React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+
 [What is this?](#what-is-this) · [How it works](#how-it-works) · [Features](#features) · [Quick start](#quick-start) · [Professional site](https://hesamsamani.me)
 
 </div>
