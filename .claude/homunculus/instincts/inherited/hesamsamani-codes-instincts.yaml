@@ -1,0 +1,318 @@
+# Instincts generated from https://github.com/Hesamsamani/hesamsamani-codes
+# Generated: 2026-06-21T05:37:26.868Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: hesamsamani-codes-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Commit Length
+
+## Action
+
+Write moderate-length commit messages (~50 characters)
+
+## Evidence
+
+- Average commit message length: 50 chars
+- Based on 2 commits
+
+---
+id: hesamsamani-codes-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Naming Files
+
+## Action
+
+Use PascalCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: PascalCase
+
+---
+id: hesamsamani-codes-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: hesamsamani-codes-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: hesamsamani-codes-arch-type-based
+trigger: "when adding new code"
+confidence: 0.8
+domain: architecture
+source: repo-analysis
+source_repo: https://github.com/Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Arch Type Based
+
+## Action
+
+Place code in the appropriate type folder (components/, services/, utils/, etc.)
+
+## Evidence
+
+- Type-based module organization detected
+- Folders: components, data
+
+---
+id: hesamsamani-codes-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: hesamsamani-codes-instinct-file-naming
+trigger: "When creating a new file in the codebase"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Instinct File Naming
+
+## Action
+
+Name the file using PascalCase
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.files
+
+---
+id: hesamsamani-codes-instinct-function-naming
+trigger: "When defining a new function"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Instinct Function Naming
+
+## Action
+
+Name the function using camelCase
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.functions
+
+---
+id: hesamsamani-codes-instinct-class-naming
+trigger: "When defining a new class"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Instinct Class Naming
+
+## Action
+
+Name the class using PascalCase
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.classes
+
+---
+id: hesamsamani-codes-instinct-constant-naming
+trigger: "When declaring a constant"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Instinct Constant Naming
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.constants
+
+---
+id: hesamsamani-codes-instinct-import-style
+trigger: "When importing modules"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Instinct Import Style
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- Pattern in codeStyle.importStyle
+
+---
+id: hesamsamani-codes-instinct-export-style
+trigger: "When exporting modules or functions"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in codeStyle.exportStyle
+
+---
+id: hesamsamani-codes-instinct-commit-prefix
+trigger: "When writing a commit message"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Instinct Commit Prefix
+
+## Action
+
+Prefix the commit message with the type (e.g., 'docs', 'ui') and optionally the cycle (e.g., 'cycle-004')
+
+## Evidence
+
+- Seen in commit: docs(cycle-004): enrich README badges and icons
+- Seen in commit: ui(cycle-004): portfolio icons and tech stack visuals
+
+---
+id: hesamsamani-codes-instinct-commit-length
+trigger: "When writing a commit message"
+confidence: 0.7
+domain: git
+source: repo-analysis
+source_repo: Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Instinct Commit Length
+
+## Action
+
+Keep the commit message concise, around 50 characters
+
+## Evidence
+
+- Pattern in commits.averageLength
+
+---
+id: hesamsamani-codes-instinct-test-location
+trigger: "When adding or updating tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Instinct Test Location
+
+## Action
+
+Place test files in a separate location from the main source code
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation
+
+---
+id: hesamsamani-codes-instinct-module-organization
+trigger: "When organizing new modules or files"
+confidence: 0.8
+domain: architecture
+source: repo-analysis
+source_repo: Hesamsamani/hesamsamani-codes
+---
+
+# Hesamsamani Codes Instinct Module Organization
+
+## Action
+
+Organize modules by type (e.g., components, data)
+
+## Evidence
+
+- Pattern in architecture.moduleOrganization
+- Pattern in architecture.folderStructure.srcLayout
+
