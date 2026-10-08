@@ -155,7 +155,7 @@ gh api graphql -f query='query { user(login: "Hesamsamani") { pinnedItems(first:
 ## Screenshot folder setup
 
 ```powershell
-mkdir C:\Users\hesam\projects\hesamsamani-codes\screenshots -Force
+mkdir C:\AI\Projects\sites\hesamsamani-codes\screenshots -Force
 ```
 
 Save all six screenshots there using the filenames above.

@@ -11,7 +11,7 @@ The project builds successfully (`npm run build` → `./dist/`). `vercel.json` i
 Run these commands from the project root in PowerShell or Terminal:
 
 ```powershell
-cd C:\Users\hesam\projects\hesamsamani-codes
+cd C:\AI\Projects\sites\hesamsamani-codes
 npx vercel login
 npx vercel --prod --yes
 ```
@@ -64,7 +64,7 @@ For scripted deploys without a browser:
 3. Deploy:
 
    ```powershell
-   cd C:\Users\hesam\projects\hesamsamani-codes
+   cd C:\AI\Projects\sites\hesamsamani-codes
    npx vercel --prod --yes --token $env:VERCEL_TOKEN
    ```
 
